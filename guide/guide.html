@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Wall Between Us — Solution Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Rock+Salt&family=Special+Elite&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root { --ink:#150d11; --paper:#ece2cb; --blood:#a11d26; --bone:#efe4d2; --mute:#6b5a52; --brass:#b08d4a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #555; }
+  body { font-family: 'Special Elite', monospace; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h1, h2, h3 { font-family: 'Zen Antique', serif; font-weight: 400; margin: 0; }
+  .scrawl { font-family: 'Rock Salt', cursive; }
+  .roman { font-family: 'Zen Antique', serif; }
+  .type { font-family: 'Special Elite', monospace; }
+
+  .page {
+    width: 210mm; height: 297mm; position: relative; overflow: hidden;
+    background: var(--paper);
+    padding: 20mm 18mm 18mm;
+    page-break-after: always; break-after: page;
+    margin: 0 auto 10px;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .page::before { content: ''; position: absolute; inset: 7mm; border: 1.5px solid var(--ink); pointer-events: none; }
+  .page::after { content: ''; position: absolute; inset: 8.4mm; border: .5px solid rgba(21,13,17,.45); pointer-events: none; }
+  .hairtop { position: absolute; left: 0; right: 0; top: 0; height: 26mm; pointer-events: none; opacity: .55; }
+  .hairtop svg { width: 100%; height: 100%; }
+  .corner { position: absolute; width: 34mm; height: 34mm; right: 10mm; bottom: 10mm; opacity: .18; }
+  .run { position: absolute; top: 11mm; left: 14mm; right: 14mm; display: flex; justify-content: space-between; font-size: 8pt; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); z-index: 2; }
+  .run b { color: var(--blood); font-weight: normal; }
+
+  /* cover */
+  .cover { background: #120b0e; color: var(--bone); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0; }
+  .cover::before { border-color: #4a1a22; }
+  .cover::after { border-color: #2a1418; }
+  .cover .art { width: 128mm; }
+  .cover .art svg { width: 100%; height: auto; display: block; }
+  .cover .kick { letter-spacing: .4em; font-size: 9pt; color: var(--brass); text-transform: uppercase; margin-top: 4mm; }
+  .cover h1 { font-size: 44pt; line-height: .95; margin: 3mm 0 2mm; text-shadow: 2px 2px 0 var(--blood); }
+  .cover .sub { font-size: 15pt; font-family: 'Zen Antique', serif; color: #d9b8b0; }
+  .cover .warn { margin-top: 10mm; font-size: 9pt; border: 1px solid var(--blood); padding: 2.5mm 5mm; color: #d9b8b0; }
+
+  /* overview */
+  .lead { font-size: 10.5pt; line-height: 1.55; max-width: 150mm; }
+  h2.sec { font-size: 26pt; margin: 6mm 0 2mm; }
+  h2.sec small { display: block; font-family: 'Special Elite', monospace; font-size: 9pt; letter-spacing: .25em; text-transform: uppercase; color: var(--blood); margin-bottom: 1mm; }
+  .flow { margin-top: 6mm; }
+  .flow svg { width: 100%; height: auto; display: block; }
+  .legend { display: flex; gap: 8mm; font-size: 8.5pt; color: var(--mute); margin-top: 3mm; }
+  .legend i { display: inline-block; width: 10mm; height: 0; border-top: 2px solid var(--blood); vertical-align: middle; margin-right: 2mm; }
+  .legend i.d { border-top: 2px dashed var(--ink); }
+
+  /* puzzle cards */
+  .card { position: relative; padding: 5mm 0 6mm; border-bottom: 1px dashed rgba(21,13,17,.4); }
+  .card:last-of-type { border-bottom: none; }
+  .card .hd { display: flex; align-items: baseline; gap: 4mm; }
+  .num { font-family: 'Zen Antique', serif; font-size: 34pt; color: var(--blood); line-height: .8; min-width: 13mm; }
+  .card h3 { font-size: 19pt; }
+  .tag { font-size: 8pt; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); margin-top: 1mm; }
+  .tag b { color: var(--ink); font-weight: normal; border: 1px solid var(--ink); padding: 0 1.6mm; margin-right: 1mm; }
+  .body { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 4mm; align-items: start; }
+  .body.wide { grid-template-columns: 1fr; }
+  .fig { background: #000; border: 1.5px solid var(--ink); }
+  .fig svg { display: block; width: 100%; height: auto; }
+  .icons { display: flex; gap: 3mm; }
+  .icons div { width: 24mm; height: 24mm; background: #ded0b2; border: 1.5px solid var(--ink); padding: 2mm; }
+  .icons svg { width: 100%; height: 100%; display: block; }
+  .cap { font-size: 7.5pt; color: var(--mute); margin-top: 1.2mm; text-align: center; }
+  ol.steps { margin: 0; padding-left: 5mm; font-size: 10pt; line-height: 1.5; }
+  ol.steps li { margin-bottom: 1.6mm; }
+  ol.steps li::marker { color: var(--blood); font-family: 'Zen Antique', serif; }
+  .trap { font-size: 9pt; margin-top: 2.5mm; padding-left: 3mm; border-left: 3px solid var(--blood); color: #4a2a2a; }
+  .trap .tl { color: var(--blood); letter-spacing: .1em; text-transform: uppercase; font-size: 7.5pt; display: block; }
+  .trap b { color: var(--blood); font-weight: normal; }
+  .answer { margin-top: 3.5mm; display: inline-flex; align-items: center; gap: 3mm; background: var(--ink); color: var(--bone); padding: 2.2mm 4mm; }
+  .answer .lbl { font-size: 7.5pt; letter-spacing: .2em; text-transform: uppercase; color: #d9b8b0; }
+  .answer .val { font-family: 'Zen Antique', serif; font-size: 17pt; color: #f2d68a; letter-spacing: .06em; }
+  .answer svg { width: 9mm; height: 9mm; }
+  .chips { display: flex; align-items: center; gap: 1.5mm; }
+  .chips .arr { color: #d9b8b0; }
+  .chip { width: 10mm; height: 10mm; background: var(--brass); border: 1px solid #000; padding: 1mm; }
+  .chip svg { width: 100%; height: 100%; display: block; }
+
+  .labels { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 8pt; margin-top: 1.5mm; }
+  .labels span b { display: block; font-family: 'Zen Antique', serif; font-size: 15pt; color: var(--blood); font-weight: normal; }
+  .labels span.x { opacity: .5; text-decoration: line-through; }
+
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+  .glyphs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2mm; text-align: center; }
+  .glyphs div svg { width: 100%; height: auto; }
+  .glyphs b { font-family: 'Zen Antique', serif; font-size: 18pt; color: var(--blood); font-weight: normal; }
+  .twins { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm; text-align: center; font-size: 8pt; margin-top: 3mm; }
+  .twins div { border: 1px dashed rgba(21,13,17,.4); padding: 1.5mm; }
+  .twins svg { width: 13mm; height: 13mm; display: block; margin: 0 auto; }
+  .twins .no { opacity: .45; }
+
+  /* cheat sheet */
+  table.cheat { width: 100%; border-collapse: collapse; margin-top: 5mm; font-size: 10pt; }
+  table.cheat th { text-align: left; font-family: 'Zen Antique', serif; font-weight: normal; font-size: 11pt; border-bottom: 2px solid var(--ink); padding: 2mm 2mm; }
+  table.cheat td { padding: 2.6mm 2mm; border-bottom: 1px dashed rgba(21,13,17,.35); vertical-align: middle; }
+  table.cheat td.n { font-family: 'Zen Antique', serif; color: var(--blood); font-size: 14pt; width: 9mm; }
+  table.cheat td.a { font-family: 'Zen Antique', serif; font-size: 13pt; white-space: nowrap; }
+  .who { font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; border: 1px solid var(--ink); padding: .3mm 1.4mm; }
+  .who.r { background: var(--ink); color: var(--bone); }
+  .endnote { margin-top: 9mm; display: grid; grid-template-columns: 36mm 1fr; gap: 6mm; align-items: center; }
+  .endnote .art svg { width: 100%; height: auto; display: block; border: 1.5px solid var(--ink); background: #1c1418; }
+  .endnote p { font-size: 10pt; line-height: 1.55; margin: 0 0 2mm; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs id="sharedDefs"></defs></svg>
+<div id="doc"></div>
+<script src="../js/art.js"></script>
+<script>
+const A = ART;
+document.getElementById('sharedDefs').innerHTML = A.defs();
+const strip = (svg) => svg.replace(/<svg[^>]*>|<\/svg>/g, '');
+let pageNo = 0;
+function deco(seed, corner) {
+  return `<div class="hairtop"><svg viewBox="0 0 800 100" preserveAspectRatio="none">${A.hair(0, -5, 800, 90, 70, seed, { sway: 30, end: 40, w: 1 })}</svg></div>
+  ${corner ? '' : '<!--'}<div class="corner"><svg viewBox="0 0 100 100"><path d="${A.spiral(50, 50, 5, 48, true, 300)}" stroke="#150d11" stroke-width="1.4" fill="none"/></svg></div>${corner ? '' : '-->'}`;
+}
+function page(inner, seed = 3, corner = false) {
+  pageNo++;
+  return `<section class="page">${deco(seed, corner)}<div class="run"><span>The Wall Between Us · <b>Solution Guide</b></span><span>${String(pageNo).padStart(2, '0')}</span></div>${inner}</section>`;
+}
+function card(n, title, tags, body, wide) {
+  return `<div class="card"><div class="hd"><div class="num">${n}</div><div><h3>${title}</h3><div class="tag">${tags}</div></div></div><div class="body ${wide ? 'wide' : ''}">${body}</div></div>`;
+}
+const ans = (v, lbl = 'Answer') => `<div class="answer"><span class="lbl">${lbl}</span><span class="val">${v}</span></div>`;
+const trap = (t) => `<div class="trap"><span class="tl">Trap</span>${t}</div>`;
+const fig = (svg, cap, cls = '') => `<div><div class="fig ${cls}">${svg}</div>${cap ? `<div class="cap">${cap}</div>` : ''}</div>`;
+const tags = (lock, clue) => `<b>${lock}</b> lock · clue held by <b>${clue}</b>`;
+
+/* ---------- small custom figures ---------- */
+function lampsFig(T) {
+  let s = `<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#2b2a30"/>`;
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+    const on = T[r * 4 + c];
+    s += `<circle cx="${34 + c * 44}" cy="${34 + r * 44}" r="15" fill="${on ? 'url(#lampOn)' : '#4a4038'}" stroke="#150d11" stroke-width="3"/>`;
+  }
+  return s + `</svg>`;
+}
+function flowFig() {
+  const W = 680, colS = 150, colR = 530;
+  const nodes = {
+    s1: [colS, 70, 'Carved cabinet', '→ scissors, watch'],
+    r1: [colR, 70, 'Cradle', '→ candle'],
+    r2: [colR, 160, 'Grandfather clock', '→ matches'],
+    r3: [colR, 250, 'Light the candle', 'reveals wall + mirror'],
+    s2: [colS, 250, 'Cut the hair', 'reveals lamp panel'],
+    s3: [colS, 340, 'Lamp panel', '→ chart, tongue (7·4)'],
+    r4: [colR, 430, 'Vanity drawer', '→ locket (2·9)'],
+    d: [340, 520, 'The door', 'both sides'],
+  };
+  let s = `<svg viewBox="0 0 ${W} 580"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a11d26"/></marker><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#150d11"/></marker></defs>`;
+  // the wall
+  s += `<rect x="326" y="20" width="28" height="460" fill="url(#hatch)" opacity=".5"/><rect x="326" y="20" width="28" height="460" fill="none" stroke="#150d11" stroke-width="1.5"/>`;
+  s += `<text x="${colS}" y="22" text-anchor="middle" class="roman" font-size="22" fill="#150d11">SAYA</text><text x="${colS}" y="40" text-anchor="middle" class="type" font-size="11" fill="#6b5a52">the doll atelier</text>`;
+  s += `<text x="${colR}" y="22" text-anchor="middle" class="roman" font-size="22" fill="#150d11">RIN</text><text x="${colR}" y="40" text-anchor="middle" class="type" font-size="11" fill="#6b5a52">the nursery</text>`;
+  const box = (k) => { const [x, y, t, sub] = nodes[k]; return `<rect x="${x - 100}" y="${y - 22}" width="200" height="46" fill="#efe4d2" stroke="#150d11" stroke-width="2"/><text x="${x}" y="${y - 2}" text-anchor="middle" class="roman" font-size="15" fill="#150d11">${t}</text><text x="${x}" y="${y + 15}" text-anchor="middle" class="type" font-size="10" fill="#6b5a52">${sub}</text>`; };
+  const line = (x1, y1, x2, y2, red) => `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${red ? '#a11d26' : '#150d11'}" stroke-width="2" ${red ? '' : 'stroke-dasharray="5 4"'} marker-end="url(#${red ? 'ah' : 'ak'})" fill="none"/>`;
+  // spoken clues cross the wall (red)
+  s += line(430, 62, 250, 62, true);       // stairs -> cabinet
+  s += line(250, 78, 430, 78, true);       // dolls -> cradle
+  s += line(250, 100, 430, 150, true);     // watch -> clock
+  s += line(430, 262, 250, 330, true);     // handprints -> lamps
+  s += line(250, 352, 430, 420, true);     // cipher -> drawer
+  // items in the same room (dashed)
+  s += line(colS, 93, colS, 228); s += line(colS, 273, colS, 318);
+  s += line(colR, 93, colR, 138); s += line(colR, 183, colR, 228); s += line(colR, 273, colR, 408);
+  s += line(colS, 363, 300, 500); s += line(colR, 453, 380, 500);
+  Object.keys(nodes).forEach((k) => (s += box(k)));
+  // small labels on red arrows
+  const lab = (x, y, t) => `<text x="${x}" y="${y}" text-anchor="middle" class="scrawl" font-size="9.5" fill="#a11d26">${t}</text>`;
+  s += lab(340, 56, 'stairs'); s += lab(340, 93, 'dolls'); s += lab(318, 136, 'watch'); s += lab(340, 286, 'handprints'); s += lab(330, 377, 'chart');
+  return s + `</svg>`;
+}
+
+/* ---------- pages ---------- */
+let html = '';
+
+// COVER
+html += `<section class="page cover">
+  <div class="art">${A.titleArt()}</div>
+  <div class="kick">a two-player horror escape room</div>
+  <h1>The Wall<br>Between Us</h1>
+  <div class="sub">Solution Guide</div>
+  <div class="warn">Every answer is inside. Only open a page when you are truly stuck.</div>
+</section>`;
+
+// OVERVIEW
+html += page(`
+  <h2 class="sec"><small>How it fits together</small>Two rooms, one wall</h2>
+  <p class="lead">Saya and Rin each play on their own screen. Almost every lock is opened by something in the <b>other</b> sister's room, so you solve it by describing what you see. The map below shows the order. Red arrows are clues you say out loud through the wall.</p>
+  <div class="flow">${flowFig()}</div>
+  <div class="legend"><span><i></i>clue passed through the wall</span><span><i class="d"></i>item or unlock in the same room</span></div>
+`, 11, true);
+
+// PUZZLES 1–2
+html += page(`
+  ${card('1', 'The carved cabinet', tags('Saya', 'Rin'), `
+    ${fig(A.stairsSVG(), "Rin's crayon drawing")}
+    <div>
+      <ol class="steps">
+        <li>Rin reads the drawing from the <b>bottom step up</b>.</li>
+        <li>Keep only the <b>red</b> symbols.</li>
+        <li>Skip the crossed-out <b>broken</b> step (the red hand).</li>
+        <li>Saya presses the four symbols in that order.</li>
+      </ol>
+      ${trap('There are two spirals. Only the <b>red</b> one at the top counts, not the green one.')}
+      <div class="answer"><span class="lbl">Answer</span><span class="chips">${['eye', 'tooth', 'knot', 'spiral'].map((n) => `<span class="chip">${A.symSVG(n)}</span>`).join('<span class="arr">→</span>')}</span></div>
+      <div class="cap" style="text-align:left">eye · tooth · knot · spiral</div>
+    </div>`)}
+  ${card('2', 'The cradle padlock', tags('Rin', 'Saya'), `
+    <div style="grid-column:1/-1">${fig(A.dollsSVG(), '')}
+      <div class="labels"><span class="x"><b>5</b>blue ribbon</span><span><b>4</b>ink tears · 1st</span><span><b>6</b>red ribbon · 4th</span><span><b>8</b>long hair · 3rd</span><span><b>3</b>missing eye · 2nd</span></div>
+    </div>
+    <div>
+      <ol class="steps">
+        <li>Saya counts the <b>stitches</b> across each doll's mouth.</li>
+        <li>Rin's ledger gives the order: <i>ink tears → missing eye → long hair → red ribbon</i>.</li>
+      </ol>
+    </div>
+    <div>${trap('The blue-ribbon doll is a decoy. The ledger never mentions it.')}${ans('4 3 8 6')}</div>`)}
+`, 21);
+
+// PUZZLES 3–5
+html += page(`
+  ${card('3', 'The grandfather clock', tags('Rin', 'Saya'), `
+    <div class="pair">${fig(A.watchSVG(), 'Saya sees this')}${fig(A.clockSVG(4, 45), 'Rin sets this')}</div>
+    <div>
+      <ol class="steps">
+        <li>Mother's watch (from the cabinet) is lying <b>on its side</b>.</li>
+        <li>"The eye always looks up": turn it in your head so the <b>red eye is at 12</b>.</li>
+        <li>Read it normally. The minute hand is on 9 (45 min). The hour hand is ¾ of the way from 4 to 5.</li>
+      </ol>
+      ${trap('Read as printed, it looks like <b>8:00</b>. And it is not 5:45. The hour hand has not reached 5 yet.')}
+      ${ans('4 : 45')}
+    </div>`)}
+  ${card('4', 'Light the candle', '<b>Rin</b> · on her own', `
+    <div class="icons">${['candle', 'matches', 'candleLit'].map((k) => `<div>${A.ICON[k]}</div>`).join('')}</div>
+    <div><ol class="steps"><li>Candle from the cradle, matches from the clock.</li><li>Click either one in your <b>pockets</b> and choose <i>light the candle</i>.</li></ol>
+    <p style="font-size:9.5pt;margin:2mm 0 0">This shows the <b>handprints</b> on the wall and the <b>writing on the mirror</b>.</p></div>`)}
+  ${card('5', 'The curtain of hair', '<b>Saya</b> · on her own', `
+    <div class="icons"><div>${A.ICON.scissors}</div></div>
+    <div><ol class="steps"><li>Take the <b>scissors</b> from the opened cabinet.</li><li>Click the curtain of hair and cut through it. The <b>lamp panel</b> is behind it.</li></ol></div>`)}
+`, 31);
+
+// PUZZLES 6–7
+const T = A.ANS_LAMPS;
+html += page(`
+  ${card('6', 'The lamp panel', tags('Saya', 'Rin'), `
+    <div class="pair">${fig(A.wallSVG(true), 'Rin sees: handprints')}${fig(lampsFig(T), 'Saya lights: the mirror image')}</div>
+    <div>
+      <ol class="steps">
+        <li>Once the candle is lit, Rin reads the handprints <b>row by row</b>, top to bottom.</li>
+        <li>They face each other through the <b>same wall</b>, so left and right swap.</li>
+        <li>Saya keeps the rows in order but <b>flips each row</b> left to right, then pulls the lever.</li>
+      </ol>
+      ${trap('Copying Rin\'s pattern exactly gives the mirror image, and it fails.')}
+      ${ans('■■□□ · □■□□ · □■■■ · □□□■', 'Saya')}
+    </div>`)}
+  ${card('7', 'The vanity letter lock', tags('Rin', 'Saya'), `
+    <div>
+      ${fig(A.mirrorSVG(true), "Rin's mirror, once the candle is lit")}
+    </div>
+    <div>
+      <div class="glyphs">${[...'SISTER'].map((ch) => `<div><svg viewBox="0 0 100 100">${A.glyph(ch, 0, 0, 100)}</svg><b>${ch}</b></div>`).join('')}</div>
+      <ol class="steps" style="margin-top:3mm">
+        <li>Rin describes the six hair shapes from left to right.</li>
+        <li>Saya matches them on the <b>stitch-chart</b> from the desk drawer.</li>
+      </ol>
+      <div class="twins">
+        <div><svg viewBox="0 0 100 100">${A.glyph('S', 0, 0, 100)}</svg>S · clockwise</div>
+        <div class="no"><svg viewBox="0 0 100 100">${A.glyph('O', 0, 0, 100)}</svg>O · anticlockwise</div>
+        <div><svg viewBox="0 0 100 100">${A.glyph('R', 0, 0, 100)}</svg>R · one tail</div>
+        <div class="no"><svg viewBox="0 0 100 100">${A.glyph('D', 0, 0, 100)}</svg>D · two tails</div>
+      </div>
+      ${ans('S I S T E R')}
+    </div>`)}
+`, 41);
+
+// PUZZLE 8 + CHEAT SHEET
+html += page(`
+  ${card('8', 'The door', '<b>Saya</b> <b>Rin</b> · each sister has her own door', `
+    <div class="pair">${fig(A.ringsSVG([7, 4, 2, 9]), "Saya's door")}${fig(A.ringsSVG([2, 9, 7, 4]), "Rin's door")}</div>
+    <div>
+      <ol class="steps">
+        <li>Saya's porcelain tongue says <b>7 · 4</b>. Rin's locket says <b>2 · 9</b>.</li>
+        <li>"The outer rings are <b>mine</b>, the inner rings are <b>hers</b>." Each sister puts <b>her own</b> numbers on the outside.</li>
+        <li>Turn the rings from the outermost to the innermost.</li>
+      </ol>
+      ${trap('The two doors have <b>different</b> codes. Do not copy your sister\'s.')}
+      <div style="display:flex;gap:3mm;flex-wrap:wrap">${ans('7 4 2 9', 'Saya')}${ans('2 9 7 4', 'Rin')}</div>
+    </div>`)}
+  <h2 class="sec" style="margin-top:4mm"><small>At a glance</small>Every answer</h2>
+  <table class="cheat">
+    <tr><th></th><th>Lock</th><th>Who enters it</th><th>Answer</th></tr>
+    <tr><td class="n">1</td><td>Carved cabinet</td><td><span class="who">Saya</span></td><td class="a">eye · tooth · knot · spiral</td></tr>
+    <tr><td class="n">2</td><td>Cradle padlock</td><td><span class="who r">Rin</span></td><td class="a">4 3 8 6</td></tr>
+    <tr><td class="n">3</td><td>Grandfather clock</td><td><span class="who r">Rin</span></td><td class="a">4:45</td></tr>
+    <tr><td class="n">4</td><td>Candle</td><td><span class="who r">Rin</span></td><td class="a">candle + matches</td></tr>
+    <tr><td class="n">5</td><td>Curtain of hair</td><td><span class="who">Saya</span></td><td class="a">scissors</td></tr>
+    <tr><td class="n">6</td><td>Lamp panel</td><td><span class="who">Saya</span></td><td class="a">■■□□ □■□□ □■■■ □□□■</td></tr>
+    <tr><td class="n">7</td><td>Vanity drawer</td><td><span class="who r">Rin</span></td><td class="a">SISTER</td></tr>
+    <tr><td class="n">8</td><td>The door</td><td><span class="who">Saya</span> <span class="who r">Rin</span></td><td class="a">7429 · 2974</td></tr>
+  </table>
+`, 51);
+
+// ENDING NOTE (fits on its own small page)
+html += page(`
+  <h2 class="sec"><small>After you escape</small>Read your endings aloud</h2>
+  <div class="endnote">
+    <div class="art">${A.face({ hair: 'bob', grin: true, spiral: true, ribbon: '#c0202a', seed: 9, dress: '#5a2a32' })}</div>
+    <div>
+      <p>Each sister gets a <b>different ending</b>. Read yours to the other player. You may not have met the same sister.</p>
+      <p>If you get stuck in the middle of the game, the in-game <b>Hints</b> button gives small nudges before the full answer. It's gentler than this guide.</p>
+      <p class="scrawl" style="font-size:10pt;color:#a11d26;margin-top:5mm">now we can be alone together</p>
+    </div>
+  </div>
+  <div class="endnote">
+    <div class="art">${A.face({ hair: 'long', spiral: true, stitch: true, seed: 7, blood: true, dress: '#2c2236' })}</div>
+    <div>
+      <p><b>Playing safe:</b> jump scares and flashing can be turned off in the game's ⚙ Settings.</p>
+      <p><b>Resetting:</b> add <span class="type">?reset</span> to the game's address to wipe saved progress on that device.</p>
+    </div>
+  </div>
+`, 61, true);
+
+document.getElementById('doc').innerHTML = html;
+document.fonts.ready.then(() => document.body.setAttribute('data-ready', '1'));
+</script>
+</body>
+</html>

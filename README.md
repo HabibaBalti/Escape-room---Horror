@@ -38,3 +38,4 @@ URL shortcuts: `?role=saya` / `?role=rin` jump straight into a room; `?reset` wi
 | `js/audio.js` | Web Audio sound: drone, heartbeat, whispers, creaks, the scream |
 | `js/game.js` | Game state, puzzles, hints, the horror director and endings |
 | `SOLUTIONS.md` | **Spoilers.** The full walkthrough |
+| `guide/The-Wall-Between-Us-Solution-Guide.pdf` | **Spoilers.** Illustrated printable solution guide (built from `guide/guide.html`) |
