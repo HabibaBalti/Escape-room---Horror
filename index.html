@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Wall Between Us</title>
+  <meta name="description" content="A two-player co-op horror escape room. Two sisters, two rooms, one wall.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&family=Special+Elite&family=Zen+Antique&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- shared SVG patterns & filters (filled by art.js) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="sharedDefs"></defs></svg>
+
+  <main id="app">
+    <!-- TITLE -->
+    <section id="screen-title" class="screen active">
+      <div class="title-wrap">
+        <div id="titleArt"></div>
+        <div class="title-text">
+          <p class="kicker">a two-player horror escape room</p>
+          <h1>The Wall<br>Between Us</h1>
+          <p class="sub">Two sisters. Two rooms. One wall that is starting to breathe.</p>
+          <button class="btn big" id="btnEnter">Enter the house</button>
+          <p class="fine">Best with headphones · 2 players on 2 devices · ~45–75 min<br>Contains flashing images, body horror &amp; jump scares (you can turn them off).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO PLAY -->
+    <section id="screen-howto" class="screen">
+      <div class="card paper">
+        <h2>Before you go in</h2>
+        <ol class="rules">
+          <li><b>You need two players</b>, each on their <b>own</b> screen (phone, tablet or computer).</li>
+          <li>Each player picks a <b>different sister</b>. Saya wakes in the doll atelier. Rin wakes in the nursery on the other side of the wall.</li>
+          <li>Get on a voice call (or sit back to back). <b>Don't show each other your screens.</b> Describe what you see.</li>
+          <li>Almost every lock in your room is opened by something in <b>your sister's</b> room. Talk constantly.</li>
+          <li>Click anything that looks interesting. Items you pick up go in your pockets at the bottom; click them to inspect or use them.</li>
+          <li>Stuck? The <b>Hints</b> button gives gentle nudges, then the answer.</li>
+        </ol>
+        <p class="warn">Something lives in the walls of this house. It gets bolder the longer you stay.</p>
+        <button class="btn" id="btnHowNext">I understand</button>
+      </div>
+    </section>
+
+    <!-- CHOOSE -->
+    <section id="screen-choose" class="screen">
+      <h2 class="choose-h">Who are you?</h2>
+      <p class="choose-sub">Your partner must choose the other sister.</p>
+      <div class="choose">
+        <button class="sister" data-role="saya">
+          <div class="portrait" id="pSaya"></div>
+          <h3>Saya</h3>
+          <p>The older sister.<br><i>The Doll Atelier</i></p>
+          <span class="resume" data-resume="saya"></span>
+        </button>
+        <button class="sister" data-role="rin">
+          <div class="portrait" id="pRin"></div>
+          <h3>Rin</h3>
+          <p>The younger sister.<br><i>The Nursery</i></p>
+          <span class="resume" data-resume="rin"></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section id="screen-intro" class="screen">
+      <div class="card paper intro">
+        <div id="introText" class="typed"></div>
+        <button class="btn hidden" id="btnWake">Open your eyes</button>
+      </div>
+    </section>
+
+    <!-- GAME -->
+    <section id="screen-game" class="screen">
+      <header class="hud">
+        <div class="hud-l"><span id="hudName"></span><span id="hudRoom"></span></div>
+        <div class="hud-c"><span id="timer">00:00</span></div>
+        <div class="hud-r">
+          <button class="btn sm" id="btnHints">Hints</button>
+          <button class="btn sm ghost" id="btnSettings" aria-label="Settings">⚙</button>
+        </div>
+      </header>
+      <div class="stage" id="stage">
+        <div id="room"></div>
+        <div id="creep"></div>
+        <div id="dark"></div>
+        <div id="eyes"></div>
+        <div id="whisper" aria-live="polite"></div>
+      </div>
+      <p class="rotate-tip">↻ Turn your phone sideways for a bigger view of the room.</p>
+      <footer class="pockets"><span class="plabel">Pockets</span><div id="inv"></div></footer>
+    </section>
+
+    <!-- END -->
+    <section id="screen-end" class="screen">
+      <div class="card paper end">
+        <div id="endArt"></div>
+        <div id="endText" class="typed"></div>
+        <div id="endStats" class="stats hidden"></div>
+        <button class="btn hidden" id="btnAgain">Back to the title</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- CLOSE-UP PANEL -->
+  <div id="panel" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+    <div class="panel-box paper">
+      <button class="x" id="panelClose" aria-label="Close">✕</button>
+      <h2 id="panelTitle"></h2>
+      <div id="panelBody"></div>
+    </div>
+  </div>
+
+  <!-- HINTS -->
+  <div id="hints" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="panel-box paper">
+      <button class="x" data-close="hints" aria-label="Close">✕</button>
+      <h2>Hints</h2>
+      <p class="muted">Reveal one step at a time. Hints are written for <b id="hintWho"></b>.</p>
+      <div id="hintList"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="settings" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="panel-box paper narrow">
+      <button class="x" data-close="settings" aria-label="Close">✕</button>
+      <h2>Settings</h2>
+      <label class="toggle"><input type="checkbox" id="optSound"> Sound</label>
+      <label class="toggle"><input type="checkbox" id="optScares"> Jump scares &amp; flashing</label>
+      <hr>
+      <button class="btn ghost" id="btnRestart">Restart my room</button>
+      <button class="btn ghost" id="btnSwitch">Choose a different sister</button>
+    </div>
+  </div>
+
+  <div id="scare" class="hidden" aria-hidden="true"></div>
+  <div id="toast" aria-live="polite"></div>
+
+  <script src="js/art.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
